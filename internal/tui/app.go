@@ -11,7 +11,7 @@ import (
 
 type AppModel struct {
 	config    config.Config
-	activeTab int
+	activeTab uint
 	tabs      []tabs.Tab
 }
 
@@ -39,11 +39,11 @@ func (m AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		case "tab":
 			m.activeTab++
-			m.activeTab %= len(m.tabs)
+			m.activeTab %= uint(len(m.tabs))
 			return m, nil
 		case "shift+tab":
 			m.activeTab--
-			m.activeTab %= len(m.tabs)
+			m.activeTab %= uint(len(m.tabs))
 			return m, nil
 		}
 
@@ -67,7 +67,7 @@ func (m AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m AppModel) View() tea.View {
 	var header string
 	for i, tab := range m.tabs {
-		if i == m.activeTab {
+		if uint(i) == m.activeTab {
 			header += "[ *" + tab.Title() + "* ] "
 		} else {
 			header += "[ " + tab.Title() + " ] "
