@@ -1,16 +1,20 @@
 package log
 
 import (
+	"bonsai-tui/internal/config"
 	"bonsai-tui/internal/tui/tabs"
 
 	tea "charm.land/bubbletea/v2"
 )
 
 type Model struct {
+	config config.Config
 }
 
-func New() tabs.Tab {
-	return Model{}
+func New(cfg config.Config) tabs.Tab {
+	return Model{
+		config: cfg,
+	}
 }
 
 func (m Model) Title() string { return "Log" }

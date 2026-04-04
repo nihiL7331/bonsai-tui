@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"bonsai-tui/internal/config"
 	"bonsai-tui/internal/tui/tabs"
 	"bonsai-tui/internal/tui/tabs/build"
 	"bonsai-tui/internal/tui/tabs/log"
@@ -9,16 +10,18 @@ import (
 )
 
 type AppModel struct {
+	config    config.Config
 	activeTab int
 	tabs      []tabs.Tab
 }
 
-func New() AppModel {
+func New(cfg config.Config) AppModel {
 	return AppModel{
+		config:    cfg,
 		activeTab: 0,
 		tabs: []tabs.Tab{
-			build.New(),
-			log.New(),
+			build.New(cfg),
+			log.New(cfg),
 		},
 	}
 }

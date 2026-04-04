@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bonsai-tui/internal/config"
 	"bonsai-tui/internal/tui"
 	"fmt"
 	"os"
@@ -9,9 +10,16 @@ import (
 )
 
 func main() {
-	appModel := tui.New()
+	cfg, err := config.Load()
+	if err != nil {
+		fmt.Printf("Failed to open bonsai.toml: %v\n", err)
+		os.Exit(1)
+	}
 
-	if _, err := tea.NewProgram(appModel).Run(); err != nil {
+	appModel := tui.New(cfg)
+
+	p := tea.NewProgram(appModel)
+	if _, err := p.Run(); err != nil {
 		fmt.Println("Error running program:", err)
 		os.Exit(1)
 	}
