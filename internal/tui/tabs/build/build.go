@@ -2,6 +2,8 @@ package build
 
 import (
 	"bonsai-tui/internal/config"
+	"bonsai-tui/internal/engine/pipeline"
+	"bonsai-tui/internal/tui/messages"
 	"bonsai-tui/internal/tui/tabs"
 	"time"
 
@@ -17,6 +19,10 @@ type Model struct {
 type buildFinishedMsg struct {
 	success bool
 	logs    string
+}
+
+type utilsFinishedMsg struct {
+	err error
 }
 
 func New(cfg config.Config) tabs.Tab {
@@ -62,5 +68,18 @@ func runCompiler() tea.Cmd {
 			success: true,
 			logs:    "MSDF Font Generated. Atlas Packed.",
 		}
+	}
+}
+
+func startUtilsCmd(utilsDir string, logChan chan messages.EngineLogMsg) tea.Cmd {
+	return func() tea.Msg {
+		err := pipeline.RunUtils(utilsDir, func(prefix, line string) {
+			logChan <- messages.EngineLogMsg{
+				Prefix:  prefix,
+				Message: line,
+			}
+		})
+		close(logChan)
+		return utilsFinishedMsg{err: err}
 	}
 }
