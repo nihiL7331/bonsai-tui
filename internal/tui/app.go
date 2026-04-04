@@ -33,6 +33,14 @@ func (m AppModel) Init() tea.Cmd {
 func (m AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 
+	for i, tab := range m.tabs {
+		if tab.Title() == "Log" {
+			updatedLog, _ := tab.Update(msg)
+			m.tabs[i] = updatedLog.(tabs.Tab)
+			break
+		}
+	}
+
 	if keyMsg, ok := msg.(tea.KeyMsg); ok {
 		switch keyMsg.String() {
 		case "ctrl+c":
@@ -47,13 +55,20 @@ func (m AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		}
 
-		updatedModel, cmd := m.tabs[m.activeTab].Update(msg)
-		m.tabs[m.activeTab] = updatedModel.(tabs.Tab)
-
-		return m, cmd
+		if m.tabs[m.activeTab].Title() != "Log" {
+			updatedModel, cmd := m.tabs[m.activeTab].Update(msg)
+			m.tabs[m.activeTab] = updatedModel.(tabs.Tab)
+			if cmd != nil {
+				cmds = append(cmds, cmd)
+			}
+		}
+		return m, tea.Batch(cmds...)
 	}
 
 	for i, tab := range m.tabs {
+		if tab.Title() == "Log" {
+			continue
+		}
 		updatedTab, cmd := tab.Update(msg)
 		m.tabs[i] = updatedTab.(tabs.Tab)
 		if cmd != nil {
