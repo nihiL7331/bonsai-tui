@@ -2,7 +2,7 @@ package build
 
 import (
 	"bonsai-tui/internal/config"
-	"bonsai-tui/internal/engine/pipeline"
+	"bonsai-tui/internal/pipeline"
 	"bonsai-tui/internal/tui/messages"
 	"bonsai-tui/internal/tui/tabs"
 	"time"
