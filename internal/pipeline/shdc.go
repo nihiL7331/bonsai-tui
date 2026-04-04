@@ -12,6 +12,19 @@ import (
 	"strings"
 )
 
+func getShaderFormat(cfg config.Config) string {
+	switch cfg.TargetOS {
+	case "windows":
+		return "glsl300es:hlsl4:glsl430"
+	case "darwin":
+		return "metal_macos:glsl300es:hlsl4:glsl430"
+	case "web":
+		return "glsl300es"
+	default:
+		return "glsl300"
+	}
+}
+
 func getPlatformDetails() (url string, filename string, err error) {
 	baseURL := "https://raw.githubusercontent.com/floooh/sokol-tools-bin/master/bin"
 

@@ -16,6 +16,7 @@ type Config struct {
 	BuildWebDir     string `toml:"build_web_dir"`     // default: web
 	BuildDesktopDir string `toml:"build_desktop_dir"` // default: desktop
 	ShadersDir      string `toml:"shaders_dir"`       // default: shaders
+	TargetOS        string `toml:"target_os"`         // default: current OS
 }
 
 func Load() (Config, error) {
