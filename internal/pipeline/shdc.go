@@ -23,12 +23,7 @@ func getShaderFormat(cfg config.Config) string {
 	}
 }
 
-func CompileShaders(cfg config.Config, logFn func(string, string)) error {
-	shdcPath, err := EnsureShdc(logFn)
-	if err != nil {
-		return fmt.Errorf("SHDC error: %w", err)
-	}
-
+func CompileShaders(cfg config.Config, shdcPath string, logFn func(string, string)) error {
 	cacheDir := getShaderCacheDir(cfg)
 	_ = os.RemoveAll(cacheDir)
 	if err := os.MkdirAll(cacheDir, 0o755); err != nil {
@@ -86,7 +81,7 @@ func CompileShaders(cfg config.Config, logFn func(string, string)) error {
 
 	gameShadersDir := cfg.GetShadersDir()
 
-	err = filepath.WalkDir(gameShadersDir, func(path string, d os.DirEntry, err error) error {
+	err := filepath.WalkDir(gameShadersDir, func(path string, d os.DirEntry, err error) error {
 		if err != nil || d.IsDir() {
 			return err
 		}
