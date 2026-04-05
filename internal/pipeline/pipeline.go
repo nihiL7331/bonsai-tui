@@ -43,9 +43,9 @@ func prepareResources(cfg config.Config, logFn func(string, string)) error {
 		return fmt.Errorf("Build-time scripts failed: %w", err)
 	}
 
-	if err := UpdateManifest(cfg.ProjectDir, logFn); err != nil {
-		return fmt.Errorf("Failed to update manifest: %w", err)
-	}
+	// if err := UpdateManifest(cfg.ProjectDir, logFn); err != nil {
+	// 	return fmt.Errorf("Failed to update manifest: %w", err)
+	// }
 
 	if _, err := PackAtlas(cfg, logFn); err != nil {
 		return fmt.Errorf("Failed to pack atlas: %w", err)
