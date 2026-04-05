@@ -16,5 +16,6 @@ const (
 	ShaderOutName    = "shaders/shader.odin"
 	DefaultFontName  = "core/render/PixelCode_9.ttf"
 	SpriteCacheName  = "sprites/sprites.bin"
+	GeneratedDir     = "core/generated"
 	FontCacheDir     = "fonts"
 )
