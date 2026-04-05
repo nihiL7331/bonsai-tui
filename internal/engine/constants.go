@@ -5,6 +5,7 @@ const (
 	AtlasDir         = "atlas"
 	AudioDir         = "audio"
 	FontsDir         = "fonts"
+	ImagesDir        = "images"
 	CacheDir         = ".cache"
 	ShaderIncludeDir = "shaders/include"
 	ShaderVsCoreName = "shader_vs_core/shader_vs_core.glsl"
