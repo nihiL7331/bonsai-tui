@@ -3,6 +3,7 @@ package engine
 const (
 	MainDir          = "bonsai"
 	AtlasDir         = "atlas"
+	ShaderDir        = "shaders"
 	AudioDir         = "audio"
 	FontsDir         = "fonts"
 	ImagesDir        = "images"
