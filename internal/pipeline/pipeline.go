@@ -39,7 +39,7 @@ func prepareResources(cfg config.Config, logFn func(string, string)) error {
 		return fmt.Errorf("Dependency check failed: %w", err)
 	}
 
-	if err := RunUtils(cfg, logFn); err != nil {
+	if err := RunPreBuildHooks(cfg.ScriptsDir, logFn); err != nil {
 		return fmt.Errorf("Build-time scripts failed: %w", err)
 	}
 
