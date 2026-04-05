@@ -36,7 +36,7 @@ func streamLog(pipe io.ReadCloser, prefix string, logFn func(string, string)) {
 	}
 }
 
-func RunUtils(utilsDir string, logFn func(string, string)) error {
+func RunPreBuildHooks(utilsDir string, logFn func(string, string)) error {
 	if _, err := os.Stat(utilsDir); os.IsNotExist(err) {
 		return nil
 	}
