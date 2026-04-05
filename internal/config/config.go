@@ -13,6 +13,7 @@ type Config struct {
 	SourceDir       string `toml:"source_dir"`        // default: source
 	GameDir         string `toml:"game_dir"`          // default: game
 	BuildDir        string `toml:"build_dir"`         // default: build
+	ScriptsDir      string `toml:"scripts_dir"`       // default: scripts
 	BuildWebDir     string `toml:"build_web_dir"`     // default: web
 	BuildDesktopDir string `toml:"build_desktop_dir"` // default: desktop
 	ShadersDir      string `toml:"shaders_dir"`       // default: shaders
