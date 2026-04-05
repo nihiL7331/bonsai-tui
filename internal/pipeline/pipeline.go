@@ -5,7 +5,7 @@ import (
 	"os/exec"
 )
 
-func CheckDependencies(logFn func(string, string)) (string, string, error) {
+func checkDependencies(logFn func(string, string)) (string, string, error) {
 	requiredTools := map[string]string{
 		"odin": "Odin compiler not found in PATH. Please install it from https://odin-lang.org/docs/install",
 		"emcc": "Could not find Emscripten SDK.\n Please install it (https://emscripten.org/docs/getting_started/downloads.html)\n and set the 'EMSDK' environment variable to its installation folder",
