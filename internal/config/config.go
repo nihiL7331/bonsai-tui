@@ -12,6 +12,7 @@ type Config struct {
 	AssetsDir       string `toml:"assets_dir"`        // default: assets
 	SourceDir       string `toml:"source_dir"`        // default: source
 	GameDir         string `toml:"game_dir"`          // default: game
+	ScenesDir       string `toml:"scenes_dir"`        // default: scenes
 	BuildDir        string `toml:"build_dir"`         // default: build
 	ScriptsDir      string `toml:"scripts_dir"`       // default: scripts
 	BuildWebDir     string `toml:"build_web_dir"`     // default: web
