@@ -1,6 +1,7 @@
 package pipeline
 
 import (
+	"bonsai-tui/internal/config"
 	"fmt"
 	"os/exec"
 )
@@ -28,4 +29,36 @@ func checkDependencies(logFn func(string, string)) (string, string, error) {
 	}
 
 	return shdcPath, msdfPath, nil
+}
+
+func prepareResources(cfg config.Config, logFn func(string, string)) error {
+	logFn("PIPELINE", "Running pre-build assembly tasks...")
+
+	shdcPath, msdfPath, err := checkDependencies(logFn)
+	if err != nil {
+		return fmt.Errorf("Dependency check failed: %w", err)
+	}
+
+	if err := RunUtils(cfg, logFn); err != nil {
+		return fmt.Errorf("Build-time scripts failed: %w", err)
+	}
+
+	if err := UpdateManifest(cfg.ProjectDir, logFn); err != nil {
+		return fmt.Errorf("Failed to update manifest: %w", err)
+	}
+
+	if _, err := PackAtlas(cfg, logFn); err != nil {
+		return fmt.Errorf("Failed to pack atlas: %w", err)
+	}
+
+	if err := GenerateAssets(cfg, msdfPath, logFn); err != nil {
+		return fmt.Errorf("Failed to generate assets: %w", err)
+	}
+
+	if err := CompileShaders(cfg, shdcPath, logFn); err != nil {
+		return fmt.Errorf("Failed to compile shaders: %w", err)
+	}
+
+	logFn("PIPELINE", "All resources prepared successfully.")
+	return nil
 }
