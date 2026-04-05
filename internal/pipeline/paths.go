@@ -6,6 +6,14 @@ import (
 	"path/filepath"
 )
 
+func getOdinAtlasDir(cfg config.Config) string {
+	return filepath.Join(getEngineDir(cfg), engine.GeneratedDir, "sprites.bin")
+}
+
+func getBinAtlasDir(cfg config.Config) string {
+	return filepath.Join(getAtlasCacheDir(cfg), "metadata.bin")
+}
+
 func getEngineDir(cfg config.Config) string {
 	return filepath.Join(cfg.ProjectDir, engine.MainDir)
 }
