@@ -71,9 +71,9 @@ func runCompiler() tea.Cmd {
 	}
 }
 
-func startUtilsCmd(utilsDir string, logChan chan messages.EngineLogMsg) tea.Cmd {
+func startPrebuildHookCmd(utilsDir string, logChan chan messages.EngineLogMsg) tea.Cmd {
 	return func() tea.Msg {
-		err := pipeline.RunUtils(utilsDir, func(prefix, line string) {
+		err := pipeline.RunPreBuildHooks(utilsDir, func(prefix, line string) {
 			logChan <- messages.EngineLogMsg{
 				Prefix:  prefix,
 				Message: line,
