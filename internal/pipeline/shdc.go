@@ -25,7 +25,7 @@ func getShaderFormat(cfg config.Config) string {
 	}
 }
 
-func getPlatformDetails() (url string, filename string, err error) {
+func getShdcPlatformDetails() (url string, filename string, err error) {
 	baseURL := "https://raw.githubusercontent.com/floooh/sokol-tools-bin/master/bin"
 
 	target := runtime.GOOS + "/" + runtime.GOARCH
@@ -36,23 +36,18 @@ func getPlatformDetails() (url string, filename string, err error) {
 	case "windows/amd64", "windows/arm64":
 		path = "/win32/"
 		exec = "sokol-shdc.exe"
-		break
 	case "linux/amd64":
 		path = "/linux/"
 		exec = "sokol-shdc"
-		break
 	case "darwin/amd64":
 		path = "/osx/"
 		exec = "sokol-shdc"
-		break
 	case "linux/arm64":
 		path = "/linux_arm64/"
 		exec = "sokol-shdc"
-		break
 	case "darwin/arm64":
 		path = "/osx_arm64/"
 		exec = "sokol-shdc"
-		break
 	default:
 		return "", "", fmt.Errorf("Unsupported platform: %s", target)
 	}
@@ -60,8 +55,8 @@ func getPlatformDetails() (url string, filename string, err error) {
 	return baseURL + path + exec, exec, nil
 }
 
-func EnsureShdc() (string, error) {
-	url, filename, err := getPlatformDetails()
+func EnsureShdc(logFn func(string, string)) (string, error) {
+	url, filename, err := getShdcPlatformDetails()
 	if err != nil {
 		return "", err
 	}
@@ -78,20 +73,31 @@ func EnsureShdc() (string, error) {
 		return destPath, nil
 	}
 
-	os.MkdirAll(installDir, 0755)
+	if err := os.MkdirAll(installDir, 0755); err != nil {
+		return "", fmt.Errorf("Failed to create install directory: %w", err)
+	}
+
+	logFn("TOOLS", "Downloading sokol-shdc...")
 
 	resp, err := http.Get(url)
-	if err != nil || resp.StatusCode != 200 {
-		return "", fmt.Errorf("Failed to download sokol-shdc: %v", err)
+	if err != nil {
+		return "", fmt.Errorf("Failed to request sokol-shdc: %w", err)
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return "", fmt.Errorf("Failed to download sokol-shdc: %v", err)
+	}
 
 	out, err := os.Create(destPath)
 	if err != nil {
 		return "", err
 	}
 	defer out.Close()
-	io.Copy(out, resp.Body)
+
+	if _, err := io.Copy(out, resp.Body); err != nil {
+		return "", fmt.Errorf("Failed to write binary to disk: %w", err)
+	}
 
 	os.Chmod(destPath, 0o755)
 
@@ -99,7 +105,7 @@ func EnsureShdc() (string, error) {
 }
 
 func CompileShaders(cfg config.Config, logFn func(string, string)) error {
-	shdcPath, err := EnsureShdc()
+	shdcPath, err := EnsureShdc(logFn)
 	if err != nil {
 		return fmt.Errorf("SHDC error: %w", err)
 	}
