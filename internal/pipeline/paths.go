@@ -31,7 +31,11 @@ func getAtlasCacheDir(cfg config.Config) string {
 }
 
 func getShaderCacheDir(cfg config.Config) string {
-	return filepath.Join(getCacheDir(cfg), "shaders")
+	return filepath.Join(getCacheDir(cfg), engine.ShaderDir)
+}
+
+func getFontCacheDir(cfg config.Config) string {
+	return filepath.Join(getCacheDir(cfg), engine.FontsDir)
 }
 
 func getShaderIncludeDir(cfg config.Config) string {
